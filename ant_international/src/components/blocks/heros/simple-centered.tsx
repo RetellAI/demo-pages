@@ -827,7 +827,7 @@ export default function SimpleCentered() {
                         return (
                         <button
                           type="button"
-                          ref={el => optionRefs.current[idx] = el}
+                          ref={el => { optionRefs.current[idx] = el; }}
                           key={c.code + c.name}
                           className={`flex w-full items-center px-3 py-2 gap-2 text-blue-900 font-medium hover:bg-blue-100 transition text-left ${c.code === countryCode ? 'bg-blue-50 font-bold' : ''} ${idx === activeDropdownIdx ? 'outline outline-2 outline-blue-600 bg-blue-100' : ''}`}
                           onClick={() => {
