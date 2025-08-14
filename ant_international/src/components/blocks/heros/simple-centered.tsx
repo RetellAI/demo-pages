@@ -513,6 +513,8 @@ export default function SimpleCentered() {
   const [dropdownSearch, setDropdownSearch] = useState('');
   const [activeDropdownIdx, setActiveDropdownIdx] = useState<number | null>(null);
   const [language, setLanguage] = useState('en');
+  const [useCase, setUseCase] = useState('sales');
+  const [showUseCaseDropdown, setShowUseCaseDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null)
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const optionsContainerRef = useRef<HTMLDivElement | null>(null)
@@ -552,6 +554,23 @@ export default function SimpleCentered() {
       window.removeEventListener('mousedown', handler);
     };
   }, [showDropdown]);
+
+  // Close use case dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Node;
+      const useCaseDropdown = document.querySelector('[data-use-case-dropdown]');
+      if (useCaseDropdown && !useCaseDropdown.contains(target)) {
+        setShowUseCaseDropdown(false);
+      }
+    };
+    if (showUseCaseDropdown) {
+      window.addEventListener('mousedown', handler);
+    }
+    return () => {
+      window.removeEventListener('mousedown', handler);
+    };
+  }, [showUseCaseDropdown]);
 
   // Keyboard navigation for country select (updates to always highlight first item after filter/search changes)
   useEffect(() => {
@@ -615,7 +634,9 @@ export default function SimpleCentered() {
         apiKey: 'key_c80bd9c65cc3762a6cb52deb4435',
       });
       const phoneCallResponse = await client.call.createPhoneCall({
-        from_number: language === 'id' ? "16266929470" : "+17242426994",
+        from_number: useCase === 'sales'
+          ? (language === 'id' ? "16266929470" : "+17242426994")
+          : (language === 'id' ? "18125058025" : "16598006755"),
         to_number: fullNumber,
         metadata: {},
       });
@@ -692,15 +713,62 @@ export default function SimpleCentered() {
         </Dialog>
       </header>
 
+      {/* Use Case Dropdown */}
+      <div className="absolute top-32 left-1/2 transform -translate-x-1/2 z-40">
+        <div className="relative" data-use-case-dropdown>
+          <button
+            type="button"
+            className="inline-flex items-center rounded-full border border-blue-200 bg-white text-blue-900 px-6 py-3 text-base font-medium focus:outline-none focus:ring-2 focus:ring-blue-700 transition shadow-lg"
+            onClick={() => setShowUseCaseDropdown(v => !v)}
+            aria-label="Select use case"
+          >
+            <span className="flex-1 text-left">
+              {useCase === 'sales' ? 'Telesales' : 'Customer Support'}
+            </span>
+            {/* Down arrow caret */}
+            <span aria-hidden="true" style={{fontSize: '0.86em', marginLeft: 8, display: 'flex', alignItems: 'center', color: '#1e40af'}}>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{display:'block'}}>
+                <path d="M2 4l3 3 3-3" stroke="#1e40af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+          </button>
+          {/* Use Case dropdown menu */}
+          {showUseCaseDropdown && (
+            <div className="absolute top-full left-0 mt-2 w-full bg-white shadow-lg rounded-xl border border-blue-200 z-50">
+              <button
+                type="button"
+                className={`flex w-full items-center px-4 py-3 text-blue-900 font-medium hover:bg-blue-100 transition text-left ${useCase === 'sales' ? 'bg-blue-50 font-bold' : ''}`}
+                onClick={() => {
+                  setUseCase('sales');
+                  setShowUseCaseDropdown(false);
+                }}
+              >
+                Telesales
+              </button>
+              <button
+                type="button"
+                className={`flex w-full items-center px-4 py-3 text-blue-900 font-medium hover:bg-blue-100 transition text-left ${useCase === 'support' ? 'bg-blue-50 font-bold' : ''}`}
+                onClick={() => {
+                  setUseCase('support');
+                  setShowUseCaseDropdown(false);
+                }}
+              >
+                Customer Support
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="relative isolate px-6 pt-32 lg:px-8 min-h-screen h-screen flex items-center justify-center">
         <div className="mx-auto max-w-2xl w-full flex flex-col justify-center items-center">
           <div className="text-center flex flex-col items-center w-full">
             {/* Logo above the main title */}
             <img
-              src="/aplus-logo.png"
-              alt="Ant International Logo"
+              src={useCase === 'sales' ? '/aplus-logo.png' : '/ant-intl.png'}
+              alt={useCase === 'sales' ? 'Alipay+ Logo' : 'Ant International Logo'}
               className="mx-auto mb-4 w-64 sm:w-80 md:w-96 lg:w-112"
-              style={{height: 'auto'}}
+              style={{ height: 120, objectFit: 'contain' }}
             />
             <div className="flex flex-col items-center mb-4">
               <h1 className="mt-2 text-4xl sm:text-5xl font-extrabold tracking-tight text-blue-900">
@@ -710,7 +778,10 @@ export default function SimpleCentered() {
             {/* Place this info on its own line above the input */}
             <div className="flex justify-center w-full">
               <p className="mt-5 text-lg font-medium text-blue-800 sm:text-xl/8 whitespace-nowrap" style={{lineHeight: 1.25}}>
-                Enter your phone number below to receive a call from our Alipay+ telesales agent.
+                {useCase === 'sales' 
+                  ? 'Enter your phone number below to receive a call from our Alipay+ merchant onboarding sales agent.'
+                  : 'Enter your phone number below to receive a call from our Ant International customer support agent.'
+                }
               </p>
             </div>
             {/* Add a space here between the sentence and the input */}
