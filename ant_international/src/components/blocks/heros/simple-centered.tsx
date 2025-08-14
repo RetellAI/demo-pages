@@ -572,6 +572,23 @@ export default function SimpleCentered() {
     };
   }, [showUseCaseDropdown]);
 
+  // Close language dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Node;
+      const languageDropdown = document.querySelector('[data-language-dropdown]');
+      if (languageDropdown && !languageDropdown.contains(target)) {
+        setShowLanguageDropdown(false);
+      }
+    };
+    if (showLanguageDropdown) {
+      window.addEventListener('mousedown', handler);
+    }
+    return () => {
+      window.removeEventListener('mousedown', handler);
+    };
+  }, [showLanguageDropdown]);
+
   // Keyboard navigation for country select (updates to always highlight first item after filter/search changes)
   useEffect(() => {
     if (!showDropdown) return;
@@ -719,6 +736,7 @@ export default function SimpleCentered() {
           <button
             type="button"
             className="inline-flex items-center rounded-full border border-blue-200 bg-white text-blue-900 px-6 py-3 text-base font-medium focus:outline-none focus:ring-2 focus:ring-blue-700 transition shadow-lg"
+            style={{ width: '210px' }}
             onClick={() => setShowUseCaseDropdown(v => !v)}
             aria-label="Select use case"
           >
@@ -734,10 +752,10 @@ export default function SimpleCentered() {
           </button>
           {/* Use Case dropdown menu */}
           {showUseCaseDropdown && (
-            <div className="absolute top-full left-0 mt-2 w-full bg-white shadow-lg rounded-xl border border-blue-200 z-50">
+            <div className="absolute top-full left-0 mt-2 w-full bg-white shadow-lg rounded-xl border border-blue-200 z-50 overflow-hidden">
               <button
                 type="button"
-                className={`flex w-full items-center px-4 py-3 text-blue-900 font-medium hover:bg-blue-100 transition text-left ${useCase === 'sales' ? 'bg-blue-50 font-bold' : ''}`}
+                className={`flex w-full items-center px-4 py-3 text-blue-900 font-medium hover:bg-blue-100 transition text-left rounded-t-xl ${useCase === 'sales' ? 'bg-blue-50 font-bold' : ''}`}
                 onClick={() => {
                   setUseCase('sales');
                   setShowUseCaseDropdown(false);
@@ -747,7 +765,7 @@ export default function SimpleCentered() {
               </button>
               <button
                 type="button"
-                className={`flex w-full items-center px-4 py-3 text-blue-900 font-medium hover:bg-blue-100 transition text-left ${useCase === 'support' ? 'bg-blue-50 font-bold' : ''}`}
+                className={`flex w-full items-center px-4 py-3 text-blue-900 font-medium hover:bg-blue-100 transition text-left rounded-b-xl ${useCase === 'support' ? 'bg-blue-50 font-bold' : ''}`}
                 onClick={() => {
                   setUseCase('support');
                   setShowUseCaseDropdown(false);
@@ -787,17 +805,17 @@ export default function SimpleCentered() {
             {/* Add a space here between the sentence and the input */}
             <div className="h-4"></div>
             <div className="flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-4 w-full">
-              <div className="relative flex items-center">
+              <div className="relative flex items-center" data-language-dropdown>
                 <button
                   type="button"
                   className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 text-blue-900 px-4 py-2 text-base font-medium focus:outline-none focus:ring-2 focus:ring-blue-700 transition"
-                  style={{ minWidth: 120, cursor: isLoading || callSent ? 'not-allowed' : 'pointer' }}
+                  style={{ width: '200px', cursor: isLoading || callSent ? 'not-allowed' : 'pointer' }}
                   disabled={isLoading || callSent}
                   onClick={() => setShowLanguageDropdown(v => !v)}
                   aria-label="Select language"
                 >
                   <span className="flex-1 text-left">
-                    {language === 'en' ? 'English' : 'Indonesian'}
+                    {language === 'en' ? 'English (Singapore)' : 'Indonesian'}
                   </span>
                   {/* Down arrow caret (tiny) */}
                   <span aria-hidden="true" style={{fontSize: '0.86em', marginLeft: 8, display: 'flex', alignItems: 'center', color: '#1e40af'}}>
@@ -809,20 +827,20 @@ export default function SimpleCentered() {
                 </button>
                 {/* Language dropdown menu */}
                 {showLanguageDropdown && (
-                  <div className="absolute top-full left-0 mt-1 w-full bg-white shadow-lg rounded-xl border border-blue-200 z-50">
+                  <div className="absolute top-full left-0 mt-1 w-full bg-white shadow-lg rounded-xl border border-blue-200 z-50 overflow-hidden">
                     <button
                       type="button"
-                      className={`flex w-full items-center px-3 py-2 text-blue-900 font-medium hover:bg-blue-100 transition text-left ${language === 'en' ? 'bg-blue-50 font-bold' : ''}`}
+                      className={`flex w-full items-center px-3 py-2 text-blue-900 font-medium hover:bg-blue-100 transition text-left rounded-t-xl ${language === 'en' ? 'bg-blue-50 font-bold' : ''}`}
                       onClick={() => {
                         setLanguage('en');
                         setShowLanguageDropdown(false);
                       }}
                     >
-                      English
+                      English (Singapore)
                     </button>
                     <button
                       type="button"
-                      className={`flex w-full items-center px-3 py-2 text-blue-900 font-medium hover:bg-blue-100 transition text-left ${language === 'id' ? 'bg-blue-50 font-bold' : ''}`}
+                      className={`flex w-full items-center px-3 py-2 text-blue-900 font-medium hover:bg-blue-100 transition text-left rounded-b-xl ${language === 'id' ? 'bg-blue-50 font-bold' : ''}`}
                       onClick={() => {
                         setLanguage('id');
                         setShowLanguageDropdown(false);
