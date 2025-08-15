@@ -5,8 +5,11 @@ import ErrorReporter from "@/components/ErrorReporter";
 import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
 import Script from "next/script";
 export const metadata: Metadata = {
-  title: "Cathay Pacific x Retell AI",
+  title: "Retell AI Demo | Cathay Pacific",
   description: "Retell AI Demo for Cathay Pacific",
+  icons: {
+    icon: '/Retell-mark-black.png',
+  },
 };
 
 export default function RootLayout({
