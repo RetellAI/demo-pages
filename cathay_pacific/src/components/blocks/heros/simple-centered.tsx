@@ -606,9 +606,7 @@ export default function SimpleCentered() {
         apiKey: 'key_c80bd9c65cc3762a6cb52deb4435',
       });
       const phoneCallResponse = await client.call.createPhoneCall({
-        from_number: useCase === 'sales'
-          ? (language === 'id' ? "16266929470" : "+17242426994")
-          : (language === 'id' ? "18125058025" : "16598006755"),
+        from_number: '+18125058025',
         to_number: fullNumber,
         metadata: {},
       });
@@ -641,7 +639,7 @@ export default function SimpleCentered() {
       className="relative min-h-screen h-screen w-screen overflow-hidden"
       style={{background: gradient}}
     >
-      <header className="absolute inset-x-0 top-0 z-50">
+      <header className="absolute inset-x-2 top-4 z-50">
         <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
           <div className="flex lg:flex-1">
             <a href="https://www.cathaypacific.com/cx/en_US.html" target="_blank" rel="noopener noreferrer" className="-m-1.5 p-1.5">
@@ -657,7 +655,7 @@ export default function SimpleCentered() {
         </nav>
       </header>
 
-      <div className="relative isolate px-6 pt-32 lg:px-8 min-h-screen h-screen flex items-center justify-center">
+      <div className="relative isolate px-6 pt-20 lg:px-8 min-h-screen h-screen flex items-center justify-center">
         <div className="mx-auto max-w-2xl w-full flex flex-col justify-center items-center">
           <div className="text-center flex flex-col items-center w-full">
             {/* Logo above the main title */}
@@ -682,7 +680,7 @@ export default function SimpleCentered() {
               </p>
             </div>
             {/* Add a space here between the sentence and the input */}
-            <div className="h-4"></div>
+            <div className="h-6"></div>
             <div className="flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-4 w-full">
               {/* Custom country code + flag dropdown trigger and menu */}
               <div className="relative flex w-full max-w-xs items-center gap-2 bg-white rounded-full px-3 py-3 border-2 border-white shadow-md">
