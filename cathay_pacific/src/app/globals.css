@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import 'tailwindcss';
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* TikTok inspired color palette */
+  --color-background: #000000; /* Pure black */
+  --color-foreground: #FFFFFF; /* Pure white */
+
+  --color-card: #181818;
+  --color-card-foreground: #FFFFFF;
+
+  --color-popover: #181818;
+  --color-popover-foreground: #FFFFFF;
+
+  --color-primary: #FF0050; /* TikTok Red */
+  --color-primary-foreground: #FFFFFF;
+
+  --color-secondary: #25F4EE; /* Electric Blue */
+  --color-secondary-foreground: #000000;
+
+  --color-muted: #222831;
+  --color-muted-foreground: #CCCCCC;
+
+  --color-accent: #25F4EE;
+  --color-accent-foreground: #000000;
+
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+
+  --color-border: #333333;
+  --color-input: #181818;
+  --color-ring: #FF0050;
+
+  /* Accent colors for chart usage, can be customized as needed */
+  --color-chart-1: #FF0050;
+  --color-chart-2: #25F4EE;
+  --color-chart-3: #FFD600;
+  --color-chart-4: #000000;
+  --color-chart-5: #FFFFFF;
+
+  --color-tiktok-red: #FF0050;
+  --color-electric-blue: #25F4EE;
+
+  --font-inter: "Inter", sans-serif;
+  --font-sleek: "Inter", sans-serif;
+
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  --gradient-green-yellow: linear-gradient(130deg, #17be40 0%, #19b135 55%, #FFF800 100%); /* Keep for legacy use if desired */
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: #333333; /* Neutral, TikTok-style border */
+  }
+}
+
+@layer utilities {
+  body {
+    font-family: var(--font-sleek);
+  }
+}
+
+@layer base {
+  :root {
+    --background: var(--color-background);
+    --gradient-green-yellow: linear-gradient(130deg, #17be40 0%, #19b135 55%, #FFF800 100%);
+    --foreground: var(--color-foreground);
+    --card: var(--color-card);
+    --card-foreground: var(--color-card-foreground);
+    --popover: var(--color-popover);
+    --popover-foreground: var(--color-popover-foreground);
+    --primary: var(--color-primary);
+    --primary-foreground: var(--color-primary-foreground);
+    --secondary: var(--color-secondary);
+    --secondary-foreground: var(--color-secondary-foreground);
+    --muted: var(--color-muted);
+    --muted-foreground: var(--color-muted-foreground);
+    --accent: var(--color-accent);
+    --accent-foreground: var(--color-accent-foreground);
+    --destructive: var(--color-destructive);
+    --destructive-foreground: var(--color-destructive-foreground);
+    --border: var(--color-border);
+    --input: var(--color-input);
+    --ring: var(--color-ring);
+    --chart-1: var(--color-chart-1);
+    --chart-2: var(--color-chart-2);
+    --chart-3: var(--color-chart-3);
+    --chart-4: var(--color-chart-4);
+    --chart-5: var(--color-chart-5);
+    --radius: 0.5rem;
+  }
+
+  body {
+    background: var(--background); /* Now uses black */
+    color: var(--foreground);
+    font-family: var(--font-sleek);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+  }
+
+  p {
+    font-weight: 400;
+  }
+
+  /* Remove focus outline styles */
+  .phone-input input:focus,
+  .phone-input input:focus-visible,
+  .phone-input__input:focus,
+  .phone-input__input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .input-phone-number input:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  input:focus,
+  input:focus-visible,
+  input:active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
