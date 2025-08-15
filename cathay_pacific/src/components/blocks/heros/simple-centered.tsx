@@ -578,19 +578,15 @@ export default function SimpleCentered() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [showDropdown, filteredCountryCodes, activeDropdownIdx]);
 
-  // On dropdown open or filtered list change, always select first item
+  // On dropdown open or filtered list change, highlight the currently selected country
   useEffect(() => {
     if (showDropdown) {
-      setActiveDropdownIdx(0);
+      const selectedIndex = filteredCountryCodes.findIndex(c => c.code === countryCode);
+      setActiveDropdownIdx(selectedIndex >= 0 ? selectedIndex : 0);
     }
-  }, [showDropdown, dropdownSearch, filteredCountryCodes.length]);
+  }, [showDropdown, dropdownSearch, filteredCountryCodes.length, countryCode]);
 
-  // Scroll into view the currently active dropdown option
-  useEffect(() => {
-    if (showDropdown && activeDropdownIdx !== null && optionRefs.current[activeDropdownIdx]) {
-      optionRefs.current[activeDropdownIdx]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    }
-  }, [activeDropdownIdx, showDropdown, filteredCountryCodes]);
+
 
   // Use the Retell SDK for making the phone call
   async function handleSendCall() {
@@ -662,8 +658,8 @@ export default function SimpleCentered() {
             <img
               src='/cathay.svg'
               alt='Cathay Logo'
-              className="mx-auto mb-4 w-64 sm:w-80 md:w-96 lg:w-112"
-              style={{ height: 120, objectFit: 'contain' }}
+              className="mx-auto mb-4 w-72 sm:w-88 md:w-104 lg:w-120"
+              style={{ height: 140, objectFit: 'contain' }}
             />
             {/* Add a space here between the logo and the title */}
             <div className="h-4"></div>
@@ -727,14 +723,14 @@ export default function SimpleCentered() {
                     tabIndex={-1}
                   >
                     {/* --- SEARCH BAR AT TOP --- */}
-                    <div className="p-2 border-b border-green-100 sticky top-0 z-10" style={{ backgroundColor: '#F2F4F1', borderColor: '#265C62' }}>
+                    <div className="p-2 border-b sticky top-0 z-10" style={{ backgroundColor: '#F2F4F1', borderColor: '#265C62' }}>
                       <input
                         type="text"
                         placeholder="Search country..."
                         value={dropdownSearch}
                         onChange={e => setDropdownSearch(e.target.value)}
                         autoFocus
-                                                  className="block w-full px-3 py-2 rounded-md border focus:ring-2 focus:ring-green-600 focus:outline-none font-medium text-green-900 text-sm"
+                                                  className="block w-full px-3 py-2 rounded-md border focus:ring-2 focus:ring-green-600 focus:outline-none font-medium text-sm"
                         style={{ backgroundColor: '#F2F4F1', borderColor: '#265C62', color: '#265C62', fontFamily: 'inherit' }}
                       />
                     </div>
@@ -750,11 +746,12 @@ export default function SimpleCentered() {
                           type="button"
                           ref={el => { optionRefs.current[idx] = el; }}
                           key={c.code + c.name}
-                          className={`flex w-full items-center px-3 py-2 gap-2 font-medium transition text-left ${c.code === countryCode ? 'font-bold' : ''} ${idx === activeDropdownIdx ? 'outline outline-2 outline-green-600' : ''}`}
+                          className={`flex w-full items-center px-3 py-2 gap-2 font-medium transition text-left ${c.code === countryCode ? 'font-bold' : ''} ${idx === activeDropdownIdx ? 'outline outline-2' : ''}`}
                           style={{ 
                             color: '#265C62',
-                            backgroundColor: c.code === countryCode ? '#F2F4F1' : 'transparent',
-                            ...(idx === activeDropdownIdx && { backgroundColor: '#F2F4F1' })
+                            backgroundColor: c.code === countryCode ? '#265C62' : 'transparent',
+                            ...(c.code === countryCode && { color: '#F2F4F1' }),
+                            ...(idx === activeDropdownIdx && { backgroundColor: '#265C62', color: '#F2F4F1', outlineColor: '#265C62' })
                           }}
                           onClick={() => {
                             setCountryCode(c.code);
@@ -808,7 +805,7 @@ export default function SimpleCentered() {
               {/* Send Call Button (unchanged) */}
               <button
                 type="button"
-                className={`w-full max-w-xs rounded-full px-6 py-3.5 text-base font-semibold whitespace-nowrap shadow-lg transition-all duration-300 flex items-center justify-center gap-2 sm:w-auto
+                className={`w-full max-w-xs rounded-full px-6 py-4 text-base font-semibold whitespace-nowrap shadow-lg transition-all duration-300 flex items-center justify-center gap-2 sm:w-auto
                   ${callSent
                     ? 'bg-white text-green-700 scale-100'
                     : 'hover:scale-105'}
