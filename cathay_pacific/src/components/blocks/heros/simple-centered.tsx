@@ -686,13 +686,13 @@ export default function SimpleCentered() {
                   ref={triggerRef}
                   tabIndex={0}
                   aria-label="Select country code"
-                  className="inline-flex items-center pl-1 pr-2 py-1 rounded-full text-base font-semibold text-green-900 bg-gray-100 border border-gray-200 select-none focus:outline-none focus:ring-2 focus:ring-green-700 transition"
+                  className="inline-flex items-center pl-1 pr-2 py-1 rounded-full text-base font-semibold text-green-900 bg-gray-100 border border-gray-200 select-none focus:outline-none focus:ring-2 focus:ring-green-900 transition"
                   style={{ backgroundColor: '#F2F4F1', minWidth: '70px', cursor: 'pointer', zIndex: 3 }}
                   onClick={() => { setShowDropdown(v => !v); setDropdownSearch('') }}
                   disabled={isLoading || callSent}
                 >
                   {/* Down arrow caret (tiny) before + sign */}
-                  <span aria-hidden="true" style={{fontSize: '0.86em', marginRight: 3, display: 'flex', alignItems: 'center', color: '#1e40af', marginLeft: 1}}>
+                  <span aria-hidden="true" style={{fontSize: '0.86em', marginRight: 3, display: 'flex', alignItems: 'center', color: '#15803d', marginLeft: 1}}>
                     {/* SVG caret for crispness */}
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{display:'block'}}>
                       <path d="M2 4l3 3 3-3" stroke="#1e40af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
